@@ -6,18 +6,36 @@ import com.fluffynx.fluffiegallery.entity.Week;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
 import com.fluffynx.fluffiegallery.repos.PaintingRepository;
 import com.fluffynx.fluffiegallery.repos.WeekRepository;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import javax.servlet.ServletContext;
 import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@Path("/paintings")
+@Path("/painting")
 public class PaintingResources {
+
+  @Context
+  private ServletContext context;
 
   @Autowired
   private PaintingRepository paintingRepository;
@@ -30,6 +48,7 @@ public class PaintingResources {
 
   @Path("/week/{weekid}")
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public List<Painting> getPaintingsByWeek(@NotNull @PathParam("weekid") int weekid) {
     Week week = weekRepository.getOne(weekid);
     if (week != null) {
@@ -41,6 +60,7 @@ public class PaintingResources {
 
   @Path("/painter/{painterid}")
   @GET
+  @Produces(MediaType.APPLICATION_JSON)
   public List<Painting> getPaintingsByPainterid(@NotNull @PathParam("painterid") int painterid) {
     Painter painter = painterRepository.getOne(painterid);
     if (painter != null) {
@@ -48,5 +68,59 @@ public class PaintingResources {
     } else {
       return Collections.emptyList();
     }
+  }
+
+  @POST
+  @Path("/upload")
+  @Consumes(MediaType.MULTIPART_FORM_DATA)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response uploadPainting(@FormDataParam("weekid") int weekid,
+      @FormDataParam("painterid") int painterid, @FormDataParam("name") String name,
+      @FormDataParam("painting") InputStream pstream,
+      @FormDataParam("painting")
+          FormDataContentDisposition filedetail) {
+    Week week = weekRepository.getOne(weekid);
+    if (week == null) {
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
+    }
+    Painter painter = painterRepository.getOne(painterid);
+    if (painter == null) {
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
+    }
+
+    File galleryDir = new File(context.getRealPath("/gallery"));
+    if (!galleryDir.exists() && !galleryDir.mkdirs()) {
+      throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR).build());
+    }
+
+    File weekDir = new File(galleryDir, "week_" + String.valueOf(weekid));
+    if (!weekDir.exists() && !weekDir.mkdirs()) {
+      throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR).build());
+    }
+
+    String ext = filedetail.getFileName();
+    int extid = ext.lastIndexOf(".");
+    if (extid != -1) {
+      ext = ext.substring(extid + 1);
+    }
+
+    String filename = painter.getName() + "." + ext;
+    byte[] buffer = new byte[8192];
+    int len = -1;
+    try (FileOutputStream fo = new FileOutputStream(new File(weekDir, filename))) {
+      while ((len = pstream.read(buffer, 0, 8192)) > 0) {
+        fo.write(buffer, 0, len);
+      }
+      fo.flush();
+    } catch (IOException e) {
+
+    }
+
+    Painting painting = new Painting();
+    painting.setName(name == null ? painter.getName() : name);
+    painting.setPainter(painter);
+    painting.setWeek(week);
+    paintingRepository.save(painting);
+    return Response.status(Status.CREATED).entity(Collections.singletonMap("filename", filename)).build();
   }
 }

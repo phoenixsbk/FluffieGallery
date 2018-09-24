@@ -41,6 +41,18 @@ public class WeekResources {
     return Optional.ofNullable(all).orElse(Collections.emptyList());
   }
 
+  @Path("/latest")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public Week getLatestWeek() {
+    List<Week> weeks = getAllWeeks();
+    if (!weeks.isEmpty()) {
+      return weeks.get(0);
+    } else {
+      return null;
+    }
+  }
+
   @POST
   @Path("/create")
   @Consumes(MediaType.APPLICATION_JSON)
