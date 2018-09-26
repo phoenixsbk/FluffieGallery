@@ -1,5 +1,6 @@
 package com.fluffynx.fluffiegallery.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -10,12 +11,14 @@ public class Painting extends Model {
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "weekId")
+  @JsonIgnore
   private Week week;
 
   private String name;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "painterId")
+  @JsonIgnore
   private Painter painter;
 
   private String filePath;

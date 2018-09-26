@@ -1,5 +1,6 @@
 package com.fluffynx.fluffiegallery.resources;
 
+import com.fluffynx.fluffiegallery.FluffiegalleryApplication;
 import com.fluffynx.fluffiegallery.entity.Painter;
 import com.fluffynx.fluffiegallery.entity.Painting;
 import com.fluffynx.fluffiegallery.entity.Week;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
@@ -28,6 +30,7 @@ import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.system.ApplicationHome;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -46,11 +49,22 @@ public class PaintingResources {
   @Autowired
   private PainterRepository painterRepository;
 
+  private File galleryFolder;
+
+  @PostConstruct
+  public void init() {
+    ApplicationHome home = new ApplicationHome(FluffiegalleryApplication.class);
+    galleryFolder = new File(home.getDir(), "static/gallery");
+    if (!galleryFolder.exists() && !galleryFolder.mkdirs()) {
+      throw new RuntimeException("Init failed");
+    }
+  }
+
   @Path("/week/{weekid}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<Painting> getPaintingsByWeek(@NotNull @PathParam("weekid") int weekid) {
-    Week week = weekRepository.getOne(weekid);
+    Week week = weekRepository.findById(weekid);
     if (week != null) {
       return paintingRepository.findByWeek(week);
     } else {
@@ -62,7 +76,7 @@ public class PaintingResources {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<Painting> getPaintingsByPainterid(@NotNull @PathParam("painterid") int painterid) {
-    Painter painter = painterRepository.getOne(painterid);
+    Painter painter = painterRepository.findById(painterid);
     if (painter != null) {
       return paintingRepository.findByPainter(painter);
     } else {
@@ -79,21 +93,18 @@ public class PaintingResources {
       @FormDataParam("painting") InputStream pstream,
       @FormDataParam("painting")
           FormDataContentDisposition filedetail) {
-    Week week = weekRepository.getOne(weekid);
+    Week week = weekRepository.findById(weekid);
     if (week == null) {
-      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
+          .entity(Collections.singletonMap("message", "Week not found")).build());
     }
-    Painter painter = painterRepository.getOne(painterid);
+    Painter painter = painterRepository.findById(painterid);
     if (painter == null) {
-      throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
+      throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
+          .entity(Collections.singletonMap("message", "Painter not found")).build());
     }
 
-    File galleryDir = new File(context.getRealPath("/gallery"));
-    if (!galleryDir.exists() && !galleryDir.mkdirs()) {
-      throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR).build());
-    }
-
-    File weekDir = new File(galleryDir, "week_" + String.valueOf(weekid));
+    File weekDir = new File(galleryFolder, "week_" + String.valueOf(weekid));
     if (!weekDir.exists() && !weekDir.mkdirs()) {
       throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR).build());
     }
@@ -112,15 +123,18 @@ public class PaintingResources {
         fo.write(buffer, 0, len);
       }
       fo.flush();
-    } catch (IOException e) {
 
+    } catch (IOException e) {
+      e.printStackTrace();
     }
 
     Painting painting = new Painting();
     painting.setName(name == null ? painter.getName() : name);
     painting.setPainter(painter);
+    painting.setFilePath(filename);
     painting.setWeek(week);
     paintingRepository.save(painting);
-    return Response.status(Status.CREATED).entity(Collections.singletonMap("filename", filename)).build();
+    return Response.status(Status.CREATED).entity(Collections.singletonMap("filename", filename))
+        .build();
   }
 }

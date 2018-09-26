@@ -20,4 +20,12 @@ public class Painter extends Model {
   public void setName(String name) {
     this.name = name;
   }
+
+  public List<Painting> getArtifacts() {
+    return artifacts;
+  }
+
+  public void setArtifacts(List<Painting> artifacts) {
+    this.artifacts = artifacts;
+  }
 }

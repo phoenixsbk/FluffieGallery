@@ -2,7 +2,6 @@ package com.fluffynx.fluffiegallery.resources;
 
 import com.fluffynx.fluffiegallery.entity.Week;
 import com.fluffynx.fluffiegallery.repos.WeekRepository;
-import com.fluffynx.fluffiegallery.resources.model.WeekReq;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -57,7 +56,7 @@ public class WeekResources {
   @Path("/create")
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createWeek(WeekReq req) {
+  public Response createWeek(WeekPojo req) {
     if (StringUtils.isEmpty(req.getName()) || StringUtils.isEmpty(req.getStartDate())) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
     }
@@ -66,9 +65,10 @@ public class WeekResources {
     week.setName(req.getName());
     LocalDate ld = LocalDate.parse(req.getStartDate(), FORMATTER);
     week.setStartDate(Date.valueOf(ld));
+    week = weekRepository.save(week);
 
     try {
-      return Response.status(Status.CREATED).entity(weekRepository.save(week)).build();
+      return Response.status(Status.CREATED).entity(week).build();
     } catch (Throwable t) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
           .entity(Collections.singletonMap("message", t.getMessage())).build());
