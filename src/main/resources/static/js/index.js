@@ -8,7 +8,7 @@ var getLatestWeek = function() {
         if (data.paintings && data.paintings.length > 0) {
           $.each(data.paintings, function(i, v) {
             console.log(v);
-            var block = createBlock(weekid, v.name, v.filePath);
+            var block = createBlock(weekid, v.name, '', v.filePath);
             $('#homepagecontainer').append(block);
           });
         }

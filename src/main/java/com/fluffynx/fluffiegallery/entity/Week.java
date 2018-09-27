@@ -15,6 +15,8 @@ public class Week extends Model {
 
   private Date startDate;
 
+  private String photoPath;
+
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "week")
   private List<Painting> paintings;
 
@@ -32,6 +34,14 @@ public class Week extends Model {
 
   public void setStartDate(Date startDate) {
     this.startDate = startDate;
+  }
+
+  public String getPhotoPath() {
+    return photoPath;
+  }
+
+  public void setPhotoPath(String photoPath) {
+    this.photoPath = photoPath;
   }
 
   public List<Painting> getPaintings() {

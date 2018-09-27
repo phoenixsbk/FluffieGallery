@@ -11,6 +11,10 @@ public class Painter extends Model {
   @OneToMany(fetch = FetchType.EAGER, mappedBy = "painter")
   private List<Painting> artifacts;
 
+  private String userId;
+
+  private String passwd;
+
   private String name;
 
   public String getName() {
@@ -19,6 +23,22 @@ public class Painter extends Model {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getUserId() {
+    return userId;
+  }
+
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
+
+  public String getPasswd() {
+    return passwd;
+  }
+
+  public void setPasswd(String passwd) {
+    this.passwd = passwd;
   }
 
   public List<Painting> getArtifacts() {

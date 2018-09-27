@@ -2,12 +2,13 @@ package com.fluffynx.fluffiegallery.resources;
 
 import com.fluffynx.fluffiegallery.entity.Painter;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
+import com.fluffynx.fluffiegallery.utils.SHAUtil;
 import java.util.List;
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -23,6 +24,9 @@ public class PainterResources {
   @Autowired
   private PainterRepository painterRepository;
 
+  @Autowired
+  private SHAUtil shaUtil;
+
   @GET
   @Path("/all")
   @Produces(MediaType.APPLICATION_JSON)
@@ -31,17 +35,21 @@ public class PainterResources {
   }
 
   @POST
-  @Path("/create/{name}")
+  @Path("/create")
+  @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  public Response createPainter(@PathParam("name") String name) {
-    if (StringUtils.isEmpty(name)) {
+  public Response createPainter(PainterPojo p) {
+    if (p == null || StringUtils.isEmpty(p.getName()) || StringUtils.isEmpty(p.getUserId())
+        || StringUtils.isEmpty(p.getPasswd())) {
       throw new BadRequestException();
     }
 
-    Painter p = new Painter();
-    p.setName(name);
-    p = painterRepository.save(p);
-    return Response.status(Status.CREATED).entity(p).build();
+    Painter pp = new Painter();
+    pp.setName(p.getName());
+    pp.setUserId(p.getUserId());
+    pp.setPasswd(shaUtil.hash(p.getPasswd()));
+    Painter out = painterRepository.save(pp);
+    out.setPasswd(null);
+    return Response.status(Status.CREATED).entity(out).build();
   }
-
 }
