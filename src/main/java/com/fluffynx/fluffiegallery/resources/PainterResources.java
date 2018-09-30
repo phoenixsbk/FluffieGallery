@@ -2,22 +2,30 @@ package com.fluffynx.fluffiegallery.resources;
 
 import com.fluffynx.fluffiegallery.FluffiegalleryApplication;
 import com.fluffynx.fluffiegallery.entity.Painter;
+import com.fluffynx.fluffiegallery.entity.PainterToken;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
+import com.fluffynx.fluffiegallery.repos.PainterTokenRepository;
 import com.fluffynx.fluffiegallery.resources.request.PainterRequest;
 import com.fluffynx.fluffiegallery.utils.SHAUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
@@ -35,6 +43,9 @@ public class PainterResources {
   private PainterRepository painterRepository;
 
   @Autowired
+  private PainterTokenRepository painterTokenRepository;
+
+  @Autowired
   private SHAUtil shaUtil;
 
   private File avatarFolder;
@@ -46,6 +57,55 @@ public class PainterResources {
     if (!avatarFolder.exists() && !avatarFolder.mkdirs()) {
       throw new RuntimeException("Init failed");
     }
+  }
+
+  @POST
+  @Path("/login")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response loginPainter(@NotNull @FormParam("uid") String uid,
+      @NotNull @FormParam("pwd") String pwd) {
+    Painter p = painterRepository.findByUserId(uid);
+    if (p == null) {
+      throw new BadRequestException();
+    }
+
+    String pwdd = shaUtil.hash(pwd);
+    if (pwdd != null && pwdd.equals(p.getPasswd())) {
+      String genToken = UUID.randomUUID().toString();
+      PainterToken token = painterTokenRepository.findByPainter(p);
+      if (token != null) {
+        token.setGenTime(LocalDateTime.now());
+        token.setToken(genToken);
+      } else {
+        token = new PainterToken();
+        token.setPainter(p);
+        token.setToken(genToken);
+        token.setGenTime(LocalDateTime.now());
+      }
+      painterTokenRepository.save(token);
+      return Response.ok().cookie(new NewCookie("pid", uid, "/", null, null, -1, false),
+          new NewCookie("ptk", genToken, "/", null, null, -1, false)).build();
+    } else {
+      return Response.status(Status.UNAUTHORIZED).build();
+    }
+  }
+
+  @POST
+  @Path("/logout")
+  public Response logout(@CookieParam("pid") String uid) {
+    Painter p = painterRepository.findByUserId(uid);
+    if (p == null) {
+      throw new BadRequestException();
+    }
+
+    PainterToken token = painterTokenRepository.findByPainter(p);
+    if (token != null) {
+      token.setToken(null);
+      painterTokenRepository.save(token);
+    }
+
+    return Response.ok().cookie(new NewCookie("pid", null, "/", null, null, -1, false),
+        new NewCookie("ptk", null, "/", null, null, -1, false)).build();
   }
 
   @GET
@@ -88,7 +148,8 @@ public class PainterResources {
     String extname = fname.substring(fname.lastIndexOf("."));
     byte[] buffer = new byte[8192];
     int len = -1;
-    try (FileOutputStream fo = new FileOutputStream(new File(avatarFolder, p.getName() + extname))) {
+    try (FileOutputStream fo = new FileOutputStream(
+        new File(avatarFolder, p.getName() + extname))) {
       while ((len = ai.read(buffer, 0, 8192)) > 0) {
         fo.write(buffer, 0, len);
       }
