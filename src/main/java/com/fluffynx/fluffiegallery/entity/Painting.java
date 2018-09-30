@@ -59,4 +59,12 @@ public class Painting extends Model {
   public void setFilePath(String filePath) {
     this.filePath = filePath;
   }
+
+  public List<Comment> getComments() {
+    return comments;
+  }
+
+  public void setComments(List<Comment> comments) {
+    this.comments = comments;
+  }
 }

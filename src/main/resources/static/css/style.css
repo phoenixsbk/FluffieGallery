@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700|Work+Sans:300,400,500,600,700');
-
 body {
     color: #191919;
     font-family: 'Work Sans', sans-serif;
@@ -964,13 +962,11 @@ a:hover, a:active {
 }
 
 .comment-form input[type="text"]:focus,
-.comment-form input[type="email"]:focus,
-.comment-form input[type="url"]:focus,
 .comment-form textarea:focus {
     border-color: #232d37;
 }
 
-.comment-form input[type="submit"] {
+.comment-form button[type="button"] {
     padding: 18px 30px;
     margin-top: 32px;
     margin-bottom: 10px;

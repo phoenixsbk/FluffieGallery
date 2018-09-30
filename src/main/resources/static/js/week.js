@@ -1,26 +1,23 @@
-var getLatestWeek = function() {
+var getWeek = function(id) {
   $.ajax({
-    url: '/week/latest',
+    url: '/week/weekid/' + id,
     dataType: 'json',
     success: function(data) {
-      if (data) {
-        var weekname = data.name;
-        if (data.paintings && data.paintings.length > 0) {
-          $.each(data.paintings, function(i, v) {
-            var block = createBlock(weekname, v);
-            $('#homepagecontainer').append(block);
-          });
-        }
+      $('#weekimage').attr('src', '/weekphoto/' + data.photoPath);
+      $('#weekname').text(data.name);
+      $('#weekdate').text(data.startDate);
+      if (data.paintings && data.paintings.length > 0) {
+        $.each(data.paintings, function(i , p) {
+          $('#weekimgcontainer').append(createBlock(data.name, p));
+        });
       }
-    },
-    error: function(err) {
     }
   });
 };
 
 var createBlock = function(weekname, painting) {
   var paddiv = $('<div>', {
-    'class': 'col-12 col-md-3 col-lg-2 no-padding'
+    'class': 'col-12 col-md-3 col-lg-2'
   });
 
   var contentdiv = $('<div>', {
@@ -29,10 +26,11 @@ var createBlock = function(weekname, painting) {
   paddiv.append(contentdiv);
 
   var figure = $('<figure>', {
-    'class': 'img-auto'
+    'class': 'img-sm-auto'
   });
   var figimg = $('<img>', {
-    'src': '/gallery/week_' + weekname + '/' + painting.filePath
+    'src': '/gallery/week_' + weekname + '/' + painting.filePath,
+    'class': 'img-center'
   });
   figure.append(figimg);
   contentdiv.append(figure);
@@ -42,7 +40,7 @@ var createBlock = function(weekname, painting) {
   });
   contentdiv.append(linkdiv);
 
-  var hline = $('<h4>');
+  var hline = $('<h5>');
   var linkline = $('<a>', {
     'href': '/painting.html?id=' + painting.id
   });
@@ -56,7 +54,7 @@ var createBlock = function(weekname, painting) {
 
   var liline = $('<li>');
   var lia = $('<a>', {
-    'href': '/painter.html?id=' + painting.painter.id
+    'href': '/painting.html?id=' + painting.id
   });
   liline.append(lia);
   lia.append(painting.painter.name);
@@ -68,5 +66,11 @@ var createBlock = function(weekname, painting) {
 }
 
 $(function() {
-  getLatestWeek();
+  var urlParams = new URLSearchParams(window.location.search);
+  if (urlParams) {
+    var weekid = urlParams.get('id');
+    if (weekid) {
+      getWeek(weekid);
+    }
+  }
 })

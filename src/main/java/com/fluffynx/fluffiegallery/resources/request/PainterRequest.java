@@ -1,6 +1,6 @@
-package com.fluffynx.fluffiegallery.resources;
+package com.fluffynx.fluffiegallery.resources.request;
 
-public class PainterPojo {
+public class PainterRequest {
   private String userId;
 
   private String passwd;

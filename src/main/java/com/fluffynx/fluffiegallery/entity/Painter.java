@@ -15,6 +15,8 @@ public class Painter extends Model {
 
   private String passwd;
 
+  private String avatar;
+
   private String name;
 
   public String getName() {
@@ -39,6 +41,14 @@ public class Painter extends Model {
 
   public void setPasswd(String passwd) {
     this.passwd = passwd;
+  }
+
+  public String getAvatar() {
+    return avatar;
+  }
+
+  public void setAvatar(String avatar) {
+    this.avatar = avatar;
   }
 
   public List<Painting> getArtifacts() {

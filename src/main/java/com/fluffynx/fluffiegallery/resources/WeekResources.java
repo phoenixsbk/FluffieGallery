@@ -4,22 +4,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fluffynx.fluffiegallery.FluffiegalleryApplication;
 import com.fluffynx.fluffiegallery.entity.Week;
 import com.fluffynx.fluffiegallery.repos.WeekRepository;
+import com.fluffynx.fluffiegallery.resources.model.ModelInclude;
+import com.fluffynx.fluffiegallery.resources.model.WeekTo;
+import com.fluffynx.fluffiegallery.resources.request.WeekRequest;
+import com.fluffynx.fluffiegallery.utils.DateUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Date;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -35,9 +38,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Path("/week")
 public class WeekResources {
-
-  private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-      .withZone(ZoneId.of("GMT+8"));
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
 
@@ -55,19 +55,35 @@ public class WeekResources {
     }
   }
 
+  @Path("/weekid/{weekid}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public WeekTo getWeekById(@NotNull @PathParam("weekid") int weekid) {
+    ModelInclude mi = new ModelInclude();
+    mi.setIncludePainting(true);
+    mi.setIncludePainter(true);
+    return Optional.ofNullable(weekRepository.findById(weekid)).map(w -> WeekTo.fromWeek(w, mi))
+        .orElse(null);
+  }
+
   @Path("/all")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Week> getAllWeeks() {
+  public List<WeekTo> getAllWeeks() {
+    ModelInclude mi = new ModelInclude();
+    mi.setIncludePainting(true);
+    mi.setIncludePainter(true);
     List<Week> all = weekRepository.findByOrderByIdDesc();
-    return Optional.ofNullable(all).orElse(Collections.emptyList());
+    return Optional.ofNullable(all)
+        .map(wks -> wks.stream().map(wk -> WeekTo.fromWeek(wk, mi)).collect(Collectors.toList()))
+        .orElse(Collections.emptyList());
   }
 
   @Path("/latest")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public Week getLatestWeek() {
-    List<Week> weeks = getAllWeeks();
+  public WeekTo getLatestWeek() {
+    List<WeekTo> weeks = getAllWeeks();
     if (!weeks.isEmpty()) {
       return weeks.get(0);
     } else {
@@ -85,9 +101,9 @@ public class WeekResources {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
     }
 
-    WeekPojo pojo;
+    WeekRequest pojo;
     try {
-      pojo = MAPPER.readValue(meta.getValue(), WeekPojo.class);
+      pojo = MAPPER.readValue(meta.getValue(), WeekRequest.class);
     } catch (IOException e) {
       e.printStackTrace();
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST).build());
@@ -99,7 +115,7 @@ public class WeekResources {
 
     String photoName = pojo.getName();
     String originName = photodetail.getFileName();
-    String weekfilename = photoName + originName.substring(originName.lastIndexOf(".") + 1);
+    String weekfilename = photoName + originName.substring(originName.lastIndexOf("."));
     byte[] buffer = new byte[8192];
     int len = -1;
     try (FileOutputStream fs = new FileOutputStream(new File(weekPhotoPath, weekfilename))) {
@@ -113,13 +129,13 @@ public class WeekResources {
 
     Week week = new Week();
     week.setName(photoName);
-    LocalDate ld = LocalDate.parse(pojo.getStartDate(), FORMATTER);
-    week.setStartDate(Date.valueOf(ld));
+    week.setStartDate(DateUtil.parseDate(pojo.getStartDate() + " 00:00:00"));
     week.setPhotoPath(weekfilename);
     week = weekRepository.save(week);
 
     try {
-      return Response.status(Status.CREATED).entity(week).build();
+      return Response.status(Status.CREATED).entity(WeekTo.fromWeek(week, new ModelInclude()))
+          .build();
     } catch (Throwable t) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
           .entity(Collections.singletonMap("message", t.getMessage())).build());

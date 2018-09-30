@@ -7,7 +7,9 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PaintingRepository extends JpaRepository<Painting, Integer> {
-  public List<Painting> findByWeek(Week week);
+  List<Painting> findByWeek(Week week);
 
-  public List<Painting> findByPainter(Painter painter);
+  List<Painting> findByPainter(Painter painter);
+
+  Painting findById(int paintingid);
 }

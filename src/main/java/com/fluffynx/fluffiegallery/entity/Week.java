@@ -1,6 +1,6 @@
 package com.fluffynx.fluffiegallery.entity;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +13,7 @@ public class Week extends Model {
   @Column(unique = true)
   private String name;
 
-  private Date startDate;
+  private LocalDateTime startDate;
 
   private String photoPath;
 
@@ -28,11 +28,11 @@ public class Week extends Model {
     this.name = name;
   }
 
-  public Date getStartDate() {
+  public LocalDateTime getStartDate() {
     return startDate;
   }
 
-  public void setStartDate(Date startDate) {
+  public void setStartDate(LocalDateTime startDate) {
     this.startDate = startDate;
   }
 

@@ -7,12 +7,16 @@ import com.fluffynx.fluffiegallery.entity.Week;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
 import com.fluffynx.fluffiegallery.repos.PaintingRepository;
 import com.fluffynx.fluffiegallery.repos.WeekRepository;
+import com.fluffynx.fluffiegallery.resources.model.ModelInclude;
+import com.fluffynx.fluffiegallery.resources.model.PaintingTo;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.validation.constraints.NotNull;
@@ -60,13 +64,32 @@ public class PaintingResources {
     }
   }
 
+  @Path("/paintingid/{paintingid}")
+  @GET
+  @Produces(MediaType.APPLICATION_JSON)
+  public PaintingTo getPaintingById(@NotNull @PathParam("paintingid") int paintingid) {
+    ModelInclude mi = new ModelInclude();
+    mi.setIncludePainter(true);
+    mi.setIncludeWeek(true);
+    mi.setIncludeComment(true);
+
+    return Optional.ofNullable(paintingRepository.findById(paintingid))
+        .map(p -> PaintingTo.fromPainting(p, mi)).orElse(null);
+  }
+
   @Path("/week/{weekid}")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Painting> getPaintingsByWeek(@NotNull @PathParam("weekid") int weekid) {
+  public List<PaintingTo> getPaintingsByWeek(@NotNull @PathParam("weekid") int weekid) {
     Week week = weekRepository.findById(weekid);
     if (week != null) {
-      return paintingRepository.findByWeek(week);
+      ModelInclude mi = new ModelInclude();
+      mi.setIncludePainter(true);
+      mi.setIncludeWeek(true);
+      mi.setIncludeComment(true);
+      return Optional.ofNullable(paintingRepository.findByWeek(week))
+          .map(ps -> ps.stream().map(p -> PaintingTo.fromPainting(p, mi)).collect(
+              Collectors.toList())).orElse(null);
     } else {
       return Collections.emptyList();
     }
@@ -104,7 +127,7 @@ public class PaintingResources {
           .entity(Collections.singletonMap("message", "Painter not found")).build());
     }
 
-    File weekDir = new File(galleryFolder, "week_" + String.valueOf(weekid));
+    File weekDir = new File(galleryFolder, "week_" + week.getName());
     if (!weekDir.exists() && !weekDir.mkdirs()) {
       throw new WebApplicationException(Response.status(Status.INTERNAL_SERVER_ERROR).build());
     }

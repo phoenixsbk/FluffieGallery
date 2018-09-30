@@ -1,363 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Hello World</title>
-
-    <!-- Required meta tags -->
+    <title>Painting</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
-
-    <!-- FontAwesome CSS -->
     <link rel="stylesheet" href="css/font-awesome.min.css">
-
-    <!-- Styles -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/ggcss.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/week.css">
 </head>
 <body>
 <header class="site-header">
     <div class="site-branding">
         <h1 class="site-title"><a href="index.html" rel="home"><img src="images/logo.png" alt="Logo"></a></h1>
-    </div><!-- .site-branding -->
-
+    </div>
     <div class="hamburger-menu">
         <div class="menu-icon">
             <img src="images/menu-icon.png" alt="menu icon">
-        </div><!-- .menu-icon -->
+        </div>
 
         <div class="menu-close-icon">
             <img src="images/x.png" alt="menu close icon">
-        </div><!-- .menu-close-icon -->
-    </div><!-- .hamburger-menu -->
-</header><!-- .site-header -->
+        </div>
+    </div>
+</header>
 
 <nav class="site-navigation flex flex-column justify-content-between">
     <div class="site-branding d-none d-lg-block ">
         <h1 class="site-title"><a href="index.html" rel="home"><img src="images/logo2.png" alt="Logo"></a></h1>
-    </div><!-- .site-branding -->
-
+    </div>
     <ul class="main-menu flex flex-column justify-content-center">
         <li class="current-menu-item"><a href="index.html">Home</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="blog.html">Blog</a></li>
+        <li><a href="weeklist.html">Weeks</a></li>
+        <li><a href="artists.html">Artists</a></li>
         <li><a href="#">About</a></li>
         <li><a href="#">Contact</a></li>
     </ul>
 
-<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-</p>
-
-
-    <div class="social-profiles">
-        <ul class="flex justify-content-start justify-content-lg-center align-items-center">
-            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-            <li><a href="#"><i class="fa fa-pinterest"></i></a></li>
-        </ul>
-    </div><!-- .social-profiles -->
-</nav><!-- .site-navigation -->
+    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+    </p>
+</nav>
 
 <div class="nav-bar-sep d-lg-none"></div>
-
 <div class="outer-container">
-    <div class="container portfolio-page">
+    <div class="container-fluid single-portfolio">
         <div class="row">
+            <div class="col-3">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="featured-img">
+                                <figure>
+                                    <img id="weekimage" />
+                                </figure>
+                            </div>
+                            <div class="col-12 col-lg-8">
+                                <div class="content-area">
+                                    <header class="entry-header">
+                                        <h1><span id="weekname"></span></h1>
+                                    </header>
+                                </div>
+                            </div>
+
+                            <aside class="col-12 col-lg-3 offset-lg-1">
+                                <div class="entry-meta">
+                                    <div class="post-category">
+                                        <label>Date</label>
+                                        <span id="weekdate"></span>
+                                    </div>
+                                </div>
+                            </aside>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-9">
+                <div class="container-fluid">
+                    <div class="row" id="weekimgcontainer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row">
             <div class="col">
-                <ul class="breadcrumbs flex align-items-center">
-                    <li><a href="#">Home</a></li>
-                    <li>Portfolio</li>
-                </ul><!-- .breadcrumbs -->
-            </div><!-- .col -->
-        </div><!-- .row -->
+                <nav class="post-nav">
+                    <ul class="flex justify-content-between align-items-center">
+                        <li><a href="#"><img src="images/angle-left.png" alt="Previous"></a></li>
+                        <li><a href="#"><img src="images/portfolio-icon.png" alt="Back to Portfolio"></a></li>
+                        <li><a href="#"><img src="images/angle-right.png" alt="Next"></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>-->
+    </div>
+</div>
 
-        <div class="row">
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/1.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/2.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/3.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/4.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/5.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/6.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/7.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/8.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/9.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/10.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/11.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/12.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/1.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/2.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/3.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-
-            <div class="col-12 col-md-6 col-lg-3">
-                <div class="portfolio-content">
-                    <figure>
-                        <img src="images/4.jpg" alt="">
-                    </figure>
-
-                    <div class="entry-content flex flex-column align-items-center justify-content-center">
-                        <h3><a href="#">Flower Skin</a></h3>
-
-                        <ul class="flex flex-wrap justify-content-center">
-                            <li><a href="#">Portfolio,</a></li>
-                            <li><a href="#">Tree</a></li>
-                        </ul>
-                    </div><!-- .entry-content -->
-                </div><!-- .portfolio-content -->
-            </div><!-- .col -->
-        </div><!-- .row -->
-
-        <div class="scroll-down flex flex-column justify-content-center align-items-center d-none d-lg-block">
-            <span class="arrow-down flex justify-content-center align-items-center"><img src="images/arrow-down.png" alt="arrow"></span>
-            <span class="scroll-text">Scroll Down</span>
-        </div><!-- .scroll-down -->
-    </div><!-- .container -->
-</div><!-- .outer-container -->
-
-<script type='text/javascript' src='js/jquery.js'></script>
-<script type='text/javascript' src='js/custom.js'></script>
-
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type='text/javascript' src='js/menu.js'></script>
+<script type='text/javascript' src='js/week.js'></script>
 </body>
 </html>

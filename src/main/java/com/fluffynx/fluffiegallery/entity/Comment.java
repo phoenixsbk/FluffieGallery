@@ -1,7 +1,7 @@
 package com.fluffynx.fluffiegallery.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -10,6 +10,7 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Comment extends Model {
+
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "paintingId")
   @JsonIgnore
@@ -17,7 +18,7 @@ public class Comment extends Model {
 
   private String text;
 
-  private Date date;
+  private LocalDateTime date;
 
   @OneToOne
   private Painter commenter;
@@ -38,11 +39,11 @@ public class Comment extends Model {
     this.text = text;
   }
 
-  public Date getDate() {
+  public LocalDateTime getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDateTime date) {
     this.date = date;
   }
 

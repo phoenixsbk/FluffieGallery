@@ -1,6 +1,6 @@
-package com.fluffynx.fluffiegallery.resources;
+package com.fluffynx.fluffiegallery.resources.request;
 
-public class WeekPojo {
+public class WeekRequest {
   private String name;
 
   private String startDate;
