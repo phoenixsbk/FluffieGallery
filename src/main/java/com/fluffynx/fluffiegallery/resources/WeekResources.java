@@ -129,6 +129,7 @@ public class WeekResources {
 
     Week week = new Week();
     week.setName(photoName);
+    week.setDescription(pojo.getDescription());
     week.setStartDate(DateUtil.parseDate(pojo.getStartDate() + " 00:00:00"));
     week.setPhotoPath(weekfilename);
     week = weekRepository.save(week);

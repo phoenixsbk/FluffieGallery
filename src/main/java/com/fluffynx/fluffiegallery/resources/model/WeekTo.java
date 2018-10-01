@@ -12,6 +12,8 @@ public class WeekTo {
 
   private String name;
 
+  private String description;
+
   private String startDate;
 
   private String photoPath;
@@ -32,6 +34,14 @@ public class WeekTo {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getStartDate() {
@@ -64,6 +74,7 @@ public class WeekTo {
     wt.setId(week.getId());
     wt.setName(week.getName());
     wt.setPhotoPath(week.getPhotoPath());
+    wt.setDescription(week.getDescription());
     wt.setStartDate(DateUtil.formatDate(week.getStartDate(), false));
     if (include.isIncludePainting()) {
       include.setIncludeWeek(false);

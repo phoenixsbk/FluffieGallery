@@ -129,6 +129,7 @@ public class PainterResources {
     pp.setName(p.getName());
     pp.setUserId(p.getUserId());
     pp.setPasswd(shaUtil.hash(p.getPasswd()));
+    pp.setDescription(p.getDescription());
     Painter out = painterRepository.save(pp);
     out.setPasswd(null);
     return Response.status(Status.CREATED).entity(out).build();

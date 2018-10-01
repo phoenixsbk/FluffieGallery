@@ -16,6 +16,8 @@ public class PainterTo {
 
   private String name;
 
+  private String description;
+
   public int getId() {
     return id;
   }
@@ -57,12 +59,21 @@ public class PainterTo {
     this.name = name;
   }
 
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
   public static PainterTo fromPainter(Painter painter, ModelInclude include) {
     PainterTo pt = new PainterTo();
     pt.setId(painter.getId());
     pt.setName(painter.getName());
     pt.setUserId(painter.getUserId());
     pt.setAvatar(painter.getAvatar());
+    pt.setDescription(painter.getDescription());
     if (include.isIncludePainting()) {
       include.setIncludePainter(false);
       pt.setArtifacts(Optional.ofNullable(painter.getArtifacts())

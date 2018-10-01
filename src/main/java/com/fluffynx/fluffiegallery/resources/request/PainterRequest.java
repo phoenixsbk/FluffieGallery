@@ -7,6 +7,8 @@ public class PainterRequest {
 
   private String name;
 
+  private String description;
+
   public String getUserId() {
     return userId;
   }
@@ -29,5 +31,13 @@ public class PainterRequest {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 }

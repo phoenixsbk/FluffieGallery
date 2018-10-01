@@ -16,7 +16,7 @@ public class Painting extends Model {
   @JsonIgnore
   private Week week;
 
-  private String name;
+  private String description;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "painterId")
@@ -36,12 +36,12 @@ public class Painting extends Model {
     this.week = week;
   }
 
-  public String getName() {
-    return name;
+  public String getDescription() {
+    return description;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public Painter getPainter() {

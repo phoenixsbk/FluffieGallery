@@ -112,7 +112,7 @@ public class PaintingResources {
   @Consumes(MediaType.MULTIPART_FORM_DATA)
   @Produces(MediaType.APPLICATION_JSON)
   public Response uploadPainting(@FormDataParam("weekid") int weekid,
-      @FormDataParam("painterid") int painterid, @FormDataParam("name") String name,
+      @FormDataParam("painterid") int painterid, @FormDataParam("desc") String description,
       @FormDataParam("painting") InputStream pstream,
       @FormDataParam("painting")
           FormDataContentDisposition filedetail) {
@@ -152,7 +152,7 @@ public class PaintingResources {
     }
 
     Painting painting = new Painting();
-    painting.setName(name == null ? painter.getName() : name);
+    painting.setDescription(description);
     painting.setPainter(painter);
     painting.setFilePath(filename);
     painting.setWeek(week);

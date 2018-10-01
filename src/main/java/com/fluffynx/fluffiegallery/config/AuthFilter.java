@@ -5,6 +5,7 @@ import com.fluffynx.fluffiegallery.entity.PainterToken;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
 import com.fluffynx.fluffiegallery.repos.PainterTokenRepository;
 import com.fluffynx.fluffiegallery.utils.DateUtil;
+import com.fluffynx.fluffiegallery.utils.SHAUtil;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -24,12 +25,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @WebFilter("/*")
 public class AuthFilter implements ContainerRequestFilter, Filter {
+  private static final Logger LOGGER = LoggerFactory.getLogger(AuthFilter.class);
+
   private static final String[] SKIP_PATHS = new String[] {"/css/", "/js/", "/fonts/", "/images/"};
 
   @Autowired
@@ -38,28 +43,39 @@ public class AuthFilter implements ContainerRequestFilter, Filter {
   @Autowired
   private PainterTokenRepository painterTokenRepository;
 
+  @Autowired
+  private SHAUtil shaUtil;
+
   @Override
   public void filter(ContainerRequestContext ctx) throws IOException {
     String path = ctx.getUriInfo().getPath();
     if (!path.equals("painter/login") && !path.equals("painter/logout")) {
-      Map<String, javax.ws.rs.core.Cookie> ckmap = ctx.getCookies();
-      if (ckmap != null && ckmap.size() >= 2) {
-        javax.ws.rs.core.Cookie pidck = ckmap.get("pid");
-        javax.ws.rs.core.Cookie ptkck = ckmap.get("ptk");
-        if (pidck != null && ptkck != null) {
-          Painter painter = painterRepository.findByUserId(pidck.getValue());
-          if (painter != null) {
-            PainterToken token = painterTokenRepository.findByPainter(painter);
-            String ckToken = ptkck.getValue();
-            if (isTokenValid(token, ckToken)) {
-              return;
+      if (path.equals("painter/create")) {
+        String decrypted = shaUtil.decrypt(ctx.getHeaderString("atk"));
+        if (decrypted != null && decrypted.startsWith("AUTHORIZED_CREATOR_")) {
+          String author = decrypted.substring("AUTHORIZED_CREATOR_".length());
+          LOGGER.warn("Author " + author + " access create painter from " + ((HttpServletRequest) ctx.getRequest()).getRemoteAddr());
+          return;
+        }
+      } else {
+        Map<String, javax.ws.rs.core.Cookie> ckmap = ctx.getCookies();
+        if (ckmap != null && ckmap.size() >= 2) {
+          javax.ws.rs.core.Cookie pidck = ckmap.get("pid");
+          javax.ws.rs.core.Cookie ptkck = ckmap.get("ptk");
+          if (pidck != null && ptkck != null) {
+            Painter painter = painterRepository.findByUserId(pidck.getValue());
+            if (painter != null) {
+              PainterToken token = painterTokenRepository.findByPainter(painter);
+              String ckToken = ptkck.getValue();
+              if (isTokenValid(token, ckToken)) {
+                return;
+              }
             }
           }
         }
       }
 
       ctx.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
-      return;
     }
   }
 
@@ -102,7 +118,6 @@ public class AuthFilter implements ContainerRequestFilter, Filter {
               return;
             }
           }
-
         }
       }
       HttpServletResponse resp = (HttpServletResponse) servletResponse;

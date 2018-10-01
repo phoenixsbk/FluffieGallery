@@ -10,7 +10,7 @@ public class PaintingTo {
 
   private WeekTo week;
 
-  private String name;
+  private String description;
 
   private PainterTo painter;
 
@@ -34,12 +34,12 @@ public class PaintingTo {
     this.week = week;
   }
 
-  public String getName() {
-    return name;
+  public String getDescription() {
+    return description;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public PainterTo getPainter() {
@@ -69,7 +69,7 @@ public class PaintingTo {
   public static PaintingTo fromPainting(Painting painting, ModelInclude include) {
     PaintingTo pt = new PaintingTo();
     pt.setId(painting.getId());
-    pt.setName(painting.getName());
+    pt.setDescription(painting.getDescription());
     pt.setFilePath(painting.getFilePath());
     if (include.isIncludeWeek()) {
       include.setIncludePainting(false);

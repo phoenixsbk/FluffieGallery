@@ -3,6 +3,8 @@ package com.fluffynx.fluffiegallery.resources.request;
 public class WeekRequest {
   private String name;
 
+  private String description;
+
   private String startDate;
 
   public String getName() {
@@ -11,6 +13,14 @@ public class WeekRequest {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
   }
 
   public String getStartDate() {
