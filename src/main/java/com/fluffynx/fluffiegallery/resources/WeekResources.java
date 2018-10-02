@@ -13,17 +13,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -69,13 +72,18 @@ public class WeekResources {
   @Path("/all")
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<WeekTo> getAllWeeks() {
+  public List<WeekTo> getAllWeeks(@DefaultValue("asc") @QueryParam("order") String order) {
     ModelInclude mi = new ModelInclude();
     mi.setIncludePainting(true);
     mi.setIncludePainter(true);
     List<Week> all = weekRepository.findByOrderByIdDesc();
+    Comparator<WeekTo> cp = Comparator.comparing(WeekTo::getId).reversed();
+    if ("asc".equalsIgnoreCase(order)) {
+      cp = Comparator.comparing(WeekTo::getId);
+    }
+    final Comparator<WeekTo> finalcp = cp;
     return Optional.ofNullable(all)
-        .map(wks -> wks.stream().map(wk -> WeekTo.fromWeek(wk, mi)).collect(Collectors.toList()))
+        .map(wks -> wks.stream().map(wk -> WeekTo.fromWeek(wk, mi)).sorted(finalcp).collect(Collectors.toList()))
         .orElse(Collections.emptyList());
   }
 
@@ -83,7 +91,7 @@ public class WeekResources {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public WeekTo getLatestWeek() {
-    List<WeekTo> weeks = getAllWeeks();
+    List<WeekTo> weeks = getAllWeeks("desc");
     if (!weeks.isEmpty()) {
       return weeks.get(0);
     } else {

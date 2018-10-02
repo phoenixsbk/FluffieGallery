@@ -26,6 +26,7 @@ import javax.ws.rs.CookieParam;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -114,6 +115,33 @@ public class PainterResources {
   }
 
   @GET
+  @Path("/me")
+  @Produces(MediaType.APPLICATION_JSON)
+  public PainterTo getMyInfo(@CookieParam("pid") String myid) {
+    Painter p = painterRepository.findByUserId(myid);
+    if (p == null) {
+      throw new BadRequestException();
+    }
+
+    return PainterTo.fromPainter(p, new ModelInclude());
+  }
+
+  @PUT
+  @Path("/me")
+  @Produces(MediaType.APPLICATION_JSON)
+  public PainterTo updateMyInfo(@FormParam("newname") String newname, @FormParam("newdesc") String newdesc, @CookieParam("pid") String myid) {
+    Painter p = painterRepository.findByUserId(myid);
+    if (p == null) {
+      throw new BadRequestException();
+    }
+
+    p.setName(newname);
+    p.setDescription(newdesc);
+    painterRepository.save(p);
+    return PainterTo.fromPainter(p, new ModelInclude());
+  }
+
+  @GET
   @Path("/painterid/{painterid}")
   @Produces(MediaType.APPLICATION_JSON)
   public PainterTo getPainter(@NotNull @PathParam("painterid") int painterid) {
@@ -188,6 +216,6 @@ public class PainterResources {
 
     p.setAvatar(p.getName() + extname);
     painterRepository.save(p);
-    return Response.status(Status.CREATED).build();
+    return Response.status(Status.CREATED).entity(p.getName() + extname).build();
   }
 }

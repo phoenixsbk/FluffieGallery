@@ -6,8 +6,7 @@ var getPainting = function(id) {
       var weekname = data.week.name;
       var filepath = data.filePath;
       $('#paintingimg').attr('src', '/gallery/week_' + weekname + '/' + filepath);
-      $('#paintingname').text(data.name);
-      $('#paintingcrumb').text(data.name);
+      $('#paintingdesc').text(data.description);
       $('#crumbweek').text(weekname);
       $('#crumbweek').attr('href', '/week.html?id=' + data.week.id);
       $('#weekLink').text(weekname);
@@ -27,12 +26,6 @@ var getPainting = function(id) {
 };
 
 var createComment = function(comment) {
-/*
-
-                                        <div class="clearfix"></div>
-                                    </article>
-                                </li>
-                                */
   var licontainer = $('<li>', {
     'class': 'comment'
   });

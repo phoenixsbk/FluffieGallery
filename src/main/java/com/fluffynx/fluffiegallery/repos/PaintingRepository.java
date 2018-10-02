@@ -11,5 +11,7 @@ public interface PaintingRepository extends JpaRepository<Painting, Integer> {
 
   List<Painting> findByPainter(Painter painter);
 
+  List<Painting> findByWeekAndPainter(Week week, Painter painter);
+
   Painting findById(int paintingid);
 }

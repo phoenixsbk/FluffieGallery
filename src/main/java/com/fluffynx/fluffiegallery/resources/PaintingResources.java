@@ -151,7 +151,14 @@ public class PaintingResources {
       e.printStackTrace();
     }
 
-    Painting painting = new Painting();
+    List<Painting> ps = paintingRepository.findByWeekAndPainter(week, painter);
+    Painting painting = null;
+    if (ps == null || ps.size() <= 0) {
+      painting = new Painting();
+    } else {
+      painting = ps.get(0);
+    }
+
     painting.setDescription(description);
     painting.setPainter(painter);
     painting.setFilePath(filename);
