@@ -1,22 +1,22 @@
-var getWeek = function(id) {
+var getPainter = function(id) {
   $.ajax({
-    url: '/week/weekid/' + id,
+    url: '/painter/painterid/' + id,
     dataType: 'json',
     success: function(data) {
-      $('#weekimage').attr('src', '/weekphoto/' + data.photoPath);
-      $('#weekname').text(data.name);
-      $('#crumbweek').text(data.name);
-      $('#weekdate').text(data.startDate);
-      if (data.paintings && data.paintings.length > 0) {
-        $.each(data.paintings, function(i , p) {
-          $('#weekimgcontainer').append(createBlock(data.name, p));
+      $('#painteravatar').attr('src', '/avatar/' + data.avatar);
+      $('#paintername').text(data.name);
+      $('#crumbpainter').text(data.name);
+      $('#painterdesc').text(data.description);
+      if (data.artifacts && data.artifacts.length > 0) {
+        $.each(data.artifacts, function(i , p) {
+          $('#painterartifactscontainer').append(createBlock(data.name, p));
         });
       }
     }
   });
 };
 
-var createBlock = function(weekname, painting) {
+var createBlock = function(paintername, painting) {
   var paddiv = $('<div>', {
     'class': 'col-12 col-md-3 col-lg-2'
   });
@@ -30,7 +30,7 @@ var createBlock = function(weekname, painting) {
     'class': 'img-sm-auto'
   });
   var figimg = $('<img>', {
-    'src': '/gallery/week_' + weekname + '/' + painting.filePath,
+    'src': '/gallery/week_' + painting.week.name + '/' + painting.filePath,
     'class': 'img-center'
   });
   figure.append(figimg);
@@ -58,7 +58,7 @@ var createBlock = function(weekname, painting) {
     'href': '/painting.html?id=' + painting.id
   });
   liline.append(lia);
-  lia.append(painting.painter.name);
+  lia.append(paintername);
 
   ulline.append(liline);
   linkdiv.append(ulline);
@@ -69,9 +69,9 @@ var createBlock = function(weekname, painting) {
 $(function() {
   var urlParams = new URLSearchParams(window.location.search);
   if (urlParams) {
-    var weekid = urlParams.get('id');
-    if (weekid) {
-      getWeek(weekid);
+    var painterid = urlParams.get('id');
+    if (painterid) {
+      getPainter(painterid);
     }
   }
 })

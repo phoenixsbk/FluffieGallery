@@ -32,8 +32,8 @@
     </div>
     <ul class="main-menu flex flex-column justify-content-center">
         <li><a href="index.html">Home</a></li>
-        <li class="current-menu-item"><a href="weeklist.html">Weeks</a></li>
-        <li><a href="painterlist.html">Painters</a></li>
+        <li><a href="weeklist.html">Weeks</a></li>
+        <li class="current-menu-item"><a href="painterlist.html">Painters</a></li>
         <li><a href="logout.html">Logout</a></li>
     </ul>
 
@@ -47,19 +47,19 @@
 <div class="outer-container">
     <div class="container-fluid single-portfolio">
         <div class="row">
-            <div class="col-3">
+            <div class="col-2">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <div class="featured-img">
                                 <figure>
-                                    <img id="weekimage" />
+                                    <img id="painteravatar" />
                                 </figure>
                             </div>
                             <div class="col-12 col-lg-8">
                                 <div class="content-area">
                                     <header class="entry-header">
-                                        <h1><span id="weekname"></span></h1>
+                                        <h1><span id="paintername"></span></h1>
                                     </header>
                                 </div>
                             </div>
@@ -67,8 +67,7 @@
                             <aside class="col-12 col-lg-3 offset-lg-1">
                                 <div class="entry-meta">
                                     <div class="post-category">
-                                        <label>Date</label>
-                                        <span id="weekdate"></span>
+                                        <span id="painterdesc"></span>
                                     </div>
                                 </div>
                             </aside>
@@ -77,14 +76,14 @@
                 </div>
 
             </div>
-            <div class="col-9">
+            <div class="col-10">
                 <div class="container-fluid">
                     <ul class="breadcrumbs flex align-items-center">
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="weeklist.html">Weeks</a></li>
-                        <li><span id="crumbweek"></span></li>
+                        <li><a href="painterlist.html">Painters</a></li>
+                        <li><span id="crumbpainter"></span></li>
                     </ul>
-                    <div class="row" id="weekimgcontainer">
+                    <div class="row" id="painterartifactscontainer">
 
                     </div>
                 </div>
@@ -107,6 +106,6 @@
 
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type='text/javascript' src='js/menu.js'></script>
-<script type='text/javascript' src='js/week.js'></script>
+<script type='text/javascript' src='js/painter.js'></script>
 </body>
 </html>

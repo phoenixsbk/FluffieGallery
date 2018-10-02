@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>All Weeks</title>
+    <title>All Painters</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
     <link rel="stylesheet" href="css/ggcss.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/week.css">
 </head>
 <body>
 <header class="site-header">
@@ -31,8 +32,8 @@
     </div>
     <ul class="main-menu flex flex-column justify-content-center">
         <li><a href="index.html">Home</a></li>
-        <li class="current-menu-item"><a href="weeklist.html">Weeks</a></li>
-        <li><a href="painterlist.html">Painters</a></li>
+        <li><a href="weeklist.html">Weeks</a></li>
+        <li class="current-menu-item"><a href="painterlist.html">Painters</a></li>
         <li><a href="logout.html">Logout</a></li>
     </ul>
 
@@ -43,16 +44,33 @@
 </nav>
 
 <div class="nav-bar-sep d-lg-none"></div>
-
-<div class="outer-container blog-page">
-    <div class="container-fluid">
-        <div class="row" id="weekcontainer">
+<div class="outer-container">
+    <div class="container single-portfolio">
+        <div class="col">
+            <ul class="breadcrumbs flex align-items-center">
+                <li><a href="index.html">Home</a></li>
+                <li>All Painters</li>
+            </ul>
         </div>
+        <div class="row" id="paintercontainer">
+        </div>
+
+        <!--<div class="row">
+            <div class="col">
+                <nav class="post-nav">
+                    <ul class="flex justify-content-between align-items-center">
+                        <li><a href="#"><img src="images/angle-left.png" alt="Previous"></a></li>
+                        <li><a href="#"><img src="images/portfolio-icon.png" alt="Back to Portfolio"></a></li>
+                        <li><a href="#"><img src="images/angle-right.png" alt="Next"></a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>-->
     </div>
 </div>
 
-<script type='text/javascript' src='js/jquery-3.3.1.min.js'></script>
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
 <script type='text/javascript' src='js/menu.js'></script>
-<script type='text/javascript' src='js/weeklist.js'></script>
+<script type='text/javascript' src='js/painterlist.js'></script>
 </body>
 </html>

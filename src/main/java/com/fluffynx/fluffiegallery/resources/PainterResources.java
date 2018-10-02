@@ -5,6 +5,8 @@ import com.fluffynx.fluffiegallery.entity.Painter;
 import com.fluffynx.fluffiegallery.entity.PainterToken;
 import com.fluffynx.fluffiegallery.repos.PainterRepository;
 import com.fluffynx.fluffiegallery.repos.PainterTokenRepository;
+import com.fluffynx.fluffiegallery.resources.model.ModelInclude;
+import com.fluffynx.fluffiegallery.resources.model.PainterTo;
 import com.fluffynx.fluffiegallery.resources.request.PainterRequest;
 import com.fluffynx.fluffiegallery.utils.SHAUtil;
 import java.io.File;
@@ -12,8 +14,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import javax.ws.rs.BadRequestException;
@@ -23,6 +27,7 @@ import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
@@ -109,10 +114,32 @@ public class PainterResources {
   }
 
   @GET
+  @Path("/painterid/{painterid}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public PainterTo getPainter(@NotNull @PathParam("painterid") int painterid) {
+    Painter painter = painterRepository.findById(painterid);
+    if (painter == null) {
+      throw new BadRequestException();
+    }
+
+    ModelInclude mi = new ModelInclude();
+    mi.setIncludePainting(true);
+    mi.setIncludeWeek(true);
+    return PainterTo.fromPainter(painter, mi);
+  }
+
+  @GET
   @Path("/all")
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Painter> getAllPainters() {
-    return painterRepository.findAll();
+  public List<PainterTo> getAllPainters() {
+    List<Painter> painters = painterRepository.findAll();
+    if (painters != null) {
+      ModelInclude mi = new ModelInclude();
+      mi.setIncludePainting(true);
+      return painters.stream().map(p -> PainterTo.fromPainter(p, mi)).collect(Collectors.toList());
+    } else {
+      return Collections.emptyList();
+    }
   }
 
   @POST
@@ -132,7 +159,7 @@ public class PainterResources {
     pp.setDescription(p.getDescription());
     Painter out = painterRepository.save(pp);
     out.setPasswd(null);
-    return Response.status(Status.CREATED).entity(out).build();
+    return Response.status(Status.CREATED).entity(PainterTo.fromPainter(out, new ModelInclude())).build();
   }
 
   @POST
