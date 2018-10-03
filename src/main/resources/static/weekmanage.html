@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Painting</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/ggcss.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/week.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.min.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="site-branding">
+        <h1 class="site-title"><a href="index.html" rel="home"><img src="images/logo.png" alt="Logo"></a></h1>
+    </div>
+    <div class="hamburger-menu">
+        <div class="menu-icon">
+            <img src="images/menu-icon.png" alt="menu icon">
+        </div>
+
+        <div class="menu-close-icon">
+            <img src="images/x.png" alt="menu close icon">
+        </div>
+    </div>
+</header>
+
+<nav class="site-navigation flex flex-column justify-content-between">
+    <div class="site-branding d-none d-lg-block ">
+        <h1 class="site-title"><a href="index.html" rel="home"><img src="images/logo2.png" alt="Logo"></a></h1>
+    </div>
+    <ul class="main-menu flex flex-column justify-content-center">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="weeklist.html">Weeks</a></li>
+        <li><a href="painterlist.html">Painters</a></li>
+        <li class="current-menu-item"><a href="manage.html">Manage</a></li>
+        <li><a href="logout.html">Logout</a></li>
+    </ul>
+
+    <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+        Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+    </p>
+</nav>
+
+<div class="nav-bar-sep d-lg-none"></div>
+<div class="outer-container">
+    <div class="container-fluid single-portfolio">
+        <div class="row">
+            <div class="col-3 col-offset-3">
+                <div class="container-fluid">
+                    <div class="form-group">
+                        <label><h3>Week Information</h3></label>
+                    </div>
+                    <div class="form-group">
+                        <label for="weekname">Week Name: </label>
+                        <input type="text" class="form-control" id="weekname" placeholder="Put week Name here" />
+                    </div>
+                    <div class="form-group">
+                        <label for="weekdesc">Description: </label>
+                        <textarea class="form-control" id="weekdesc" placeholder="Put week description here"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="weekdate">Start Date: </label>
+                        <input type="text" class="form-control" id="weekdate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="weekphoto">Upload Photo: </label>
+                        <input type="file" class="form-control" id="weekphoto" />
+                    </div>
+                    <div class="form-group">
+                        <button type="button" id="createWeekBtn" class="btn btn-default">Create Week</button>
+                        <span style="color:green;display:none;" id="createWeekOK"><i class="fa fa-check"></i></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type='text/javascript' src='js/menu.js'></script>
+<script type='text/javascript' src='js/bootstrap-datepicker.min.js'></script>
+<script type='text/javascript' src='js/bootstrap-datepicker.zh-CN.min.js'></script>
+<script type='text/javascript' src='js/weekmanage.js'></script>
+</body>
+</html>

@@ -683,7 +683,7 @@ a:hover, a:active {
     font-size: 0.875rem;
 }
 
-.blog-page .blog-content .posted-on::after {
+.blog-page .blog-content::after {
     content: '/';
     position: absolute;
     top: 0;

@@ -45,6 +45,12 @@ var createBlock = function(week) {
   linkline.append(week.name);
   hline.append(linkline);
   headerline.append(hline);
+
+  var pline = $('<div>', {
+    'class': 'posted-by',
+    'text': week.description
+  });
+  headerline.append(pline);
   linkdiv.append(headerline);
 
   var footerline = $('<footer>', {
