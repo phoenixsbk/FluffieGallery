@@ -54,7 +54,7 @@ public class AuthFilter implements ContainerRequestFilter, Filter {
         String decrypted = shaUtil.decrypt(ctx.getHeaderString("atk"));
         if (decrypted != null && decrypted.startsWith("AUTHORIZED_CREATOR_")) {
           String author = decrypted.substring("AUTHORIZED_CREATOR_".length());
-          LOGGER.warn("Author " + author + " access create painter from " + ((HttpServletRequest) ctx.getRequest()).getRemoteAddr());
+          LOGGER.warn("Author " + author + " access create painter from " + ctx.getRequest().toString());
           return;
         }
       } else {

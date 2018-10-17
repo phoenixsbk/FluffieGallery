@@ -47,91 +47,89 @@
 <div class="nav-bar-sep d-lg-none"></div>
 <div class="outer-container">
     <div class="container-fluid single-portfolio">
-        <div class="row">
-            <div class="col-3">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="featured-img">
-                                <figure>
-                                    <img id="painteravatar" />
-                                </figure>
-                            </div>
-                            <div class="col-12 col-lg-8">
-                                <div class="content-area">
-                                    <header class="entry-header">
-                                        <h1><span id="paintername"></span></h1>
-                                    </header>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="myavatar">Update Avatar: </label>
-                                <input type="file" class="form-control" id="myavatar" />
-                            </div>
-                            <div class="form-group">
-                                <button type="button" id="uploadAvatarBtn" class="btn btn-default">Upload</button>
-                                <span style="color:green;display:none;" id="uploadAvatarOK"><i class="fa fa-check"></i></span>
-                            </div>
-                        </div>
-                    </div>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item">
+                <a href="#basictab" aria-controls="basictab" role="tab" data-toggle="tab" aria-selected="true" class="nav-link active">Basic Info</a>
+            </li>
+            <li class="nav-item">
+                <a href="#avatartab" aria-controls="avatartab" role="tab" data-toggle="tab" aria-selected="false" class="nav-link">Avatar</a>
+            </li>
+            <li class="nav-item">
+                <a href="#uploadtab" aria-controls="uploadtab" role="tab" data-toggle="tab" aria-selected="false" class="nav-link">Upload Image</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade show active" id="basictab">
+                <div class="form-group">
+                    <label><h3>Basic Information</h3></label>
+                </div>
+                <div class="form-group">
+                    <label for="myid">Login ID: </label>
+                    <span class="form-control" id="myid"></span>
+                    <input type="hidden" id="myuid" />
+                </div>
+                <div class="form-group">
+                    <label for="myname">Name: </label>
+                    <input type="text" class="form-control" id="myname" placeholder="Put Name here" />
+                </div>
+                <div class="form-group">
+                    <label for="mydesc">Description: </label>
+                    <textarea class="form-control" id="mydesc" placeholder="Show us some description"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="updateBasicBtn" class="btn btn-default">Update Basic Info</button>
+                    <span style="color:green;display:none;" id="updateBasicOK"><i class="fa fa-check"></i></span>
                 </div>
             </div>
-            <div class="col-3">
-                <div class="container-fluid">
-                    <div class="form-group">
-                        <label><h3>Basic Information</h3></label>
-                    </div>
-                    <div class="form-group">
-                        <label for="myid">Login ID: </label>
-                        <span class="form-control" id="myid"></span>
-                        <input type="hidden" id="myuid" />
-                    </div>
-                    <div class="form-group">
-                        <label for="myname">Name: </label>
-                        <input type="text" class="form-control" id="myname" placeholder="Put Name here" />
-                    </div>
-                    <div class="form-group">
-                        <label for="mydesc">Description: </label>
-                        <textarea class="form-control" id="mydesc" placeholder="Show us some description"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" id="updateBasicBtn" class="btn btn-default">Update Basic Info</button>
-                        <span style="color:green;display:none;" id="updateBasicOK"><i class="fa fa-check"></i></span>
+            <div role="tabpanel" class="tab-pane fade" id="avatartab">
+                <div class="featured-img">
+                    <figure>
+                        <img id="painteravatar" />
+                    </figure>
+                </div>
+                <div class="col-12 col-lg-8">
+                    <div class="content-area">
+                        <header class="entry-header">
+                            <h1><span id="paintername"></span></h1>
+                        </header>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label for="myavatar">Update Avatar: </label>
+                    <input type="file" class="form-control" id="myavatar" />
+                </div>
+                <div class="form-group">
+                    <button type="button" id="uploadAvatarBtn" class="btn btn-default">Upload</button>
+                    <span style="color:green;display:none;" id="uploadAvatarOK"><i class="fa fa-check"></i></span>
+                </div>
             </div>
-            <div class="col-3">
-                <div class="container-fluid">
-                    <div class="form-group">
-                        <label><h3>Upload new artifact</h3></label>
-                    </div>
-                    <div class="form-group">
-                        <label for="newweek">Week: </label>
-                        <select id="newweek" class="form-control"></select>
-                    </div>
-                    <div class="form-group">
-                        <label for="newartifact">Upload Artifact: </label>
-                        <input type="file" class="form-control" id="newartifact" />
-                    </div>
-                    <div class="form-group">
-                        <label for="newdesc">Description: </label>
-                        <textarea class="form-control" id="newdesc"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" class="btn btn-default" id="newartifactBtn">Upload</button>
-                        <span style="color:green;display:none;" id="newartifactOK"><i class="fa fa-check"></i></span>
-                    </div>
+            <div role="tabpanel" class="tab-pane fade" id="uploadtab">
+                <div class="form-group">
+                    <label><h3>Upload new artifact</h3></label>
+                </div>
+                <div class="form-group">
+                    <label for="newweek">Week: </label>
+                    <select id="newweek" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label for="newartifact">Upload Artifact: </label>
+                    <input type="file" class="form-control" id="newartifact" />
+                </div>
+                <div class="form-group">
+                    <label for="newdesc">Description: </label>
+                    <textarea class="form-control" id="newdesc"></textarea>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default" id="newartifactBtn">Upload</button>
+                    <span style="color:green;display:none;" id="newartifactOK"><i class="fa fa-check"></i></span>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/popper.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type='text/javascript' src='js/menu.js'></script>
 <script type='text/javascript' src='js/manage.js'></script>
 </body>
