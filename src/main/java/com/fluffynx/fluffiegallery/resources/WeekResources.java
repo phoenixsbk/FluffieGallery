@@ -65,7 +65,7 @@ public class WeekResources {
     ModelInclude mi = new ModelInclude();
     mi.setIncludePainting(true);
     mi.setIncludePainter(true);
-    return Optional.ofNullable(weekRepository.findById(weekid)).map(w -> WeekTo.fromWeek(w, mi))
+    return weekRepository.findById(weekid).map(w -> WeekTo.fromWeek(w, mi))
         .orElse(null);
   }
 

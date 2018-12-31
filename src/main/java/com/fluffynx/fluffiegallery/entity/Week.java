@@ -19,7 +19,7 @@ public class Week extends Model {
 
   private String photoPath;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "week")
+  @OneToMany(mappedBy = "week")
   private List<Painting> paintings;
 
   public String getName() {

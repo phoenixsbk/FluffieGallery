@@ -11,19 +11,19 @@ import javax.persistence.OneToMany;
 @Entity
 public class Painting extends Model {
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne
   @JoinColumn(name = "weekId")
   @JsonIgnore
   private Week week;
 
   private String description;
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne
   @JoinColumn(name = "painterId")
   @JsonIgnore
   private Painter painter;
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "painting")
+  @OneToMany(mappedBy = "painting")
   private List<Comment> comments;
 
   private String filePath;

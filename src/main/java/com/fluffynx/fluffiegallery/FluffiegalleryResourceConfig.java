@@ -1,6 +1,7 @@
 package com.fluffynx.fluffiegallery;
 
 import com.fluffynx.fluffiegallery.config.AuthFilter;
+import com.fluffynx.fluffiegallery.resources.CommentResources;
 import com.fluffynx.fluffiegallery.resources.PainterResources;
 import com.fluffynx.fluffiegallery.resources.PaintingResources;
 import com.fluffynx.fluffiegallery.resources.WeekResources;
@@ -18,6 +19,7 @@ public class FluffiegalleryResourceConfig extends ResourceConfig {
     register(PaintingResources.class);
     register(WeekResources.class);
     register(PainterResources.class);
+    register(CommentResources.class);
     register(MultiPartFeature.class);
     register(AuthFilter.class);
     property(ServletProperties.FILTER_FORWARD_ON_404, true);

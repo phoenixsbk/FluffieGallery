@@ -11,7 +11,7 @@ import javax.persistence.OneToOne;
 @Entity
 public class Comment extends Model {
 
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne
   @JoinColumn(name = "paintingId")
   @JsonIgnore
   private Painting painting;

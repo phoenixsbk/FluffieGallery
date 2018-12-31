@@ -8,7 +8,7 @@ import javax.persistence.OneToMany;
 @Entity
 public class Painter extends Model {
 
-  @OneToMany(fetch = FetchType.EAGER, mappedBy = "painter")
+  @OneToMany(mappedBy = "painter")
   private List<Painting> artifacts;
 
   private String userId;

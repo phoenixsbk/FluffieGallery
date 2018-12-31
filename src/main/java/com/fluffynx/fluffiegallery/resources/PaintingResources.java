@@ -81,7 +81,7 @@ public class PaintingResources {
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<PaintingTo> getPaintingsByWeek(@NotNull @PathParam("weekid") int weekid) {
-    Week week = weekRepository.findById(weekid);
+    Week week = weekRepository.findById(weekid).orElse(null);
     if (week != null) {
       ModelInclude mi = new ModelInclude();
       mi.setIncludePainter(true);
@@ -116,7 +116,7 @@ public class PaintingResources {
       @FormDataParam("painting") InputStream pstream,
       @FormDataParam("painting")
           FormDataContentDisposition filedetail) {
-    Week week = weekRepository.findById(weekid);
+    Week week = weekRepository.findById(weekid).orElse(null);
     if (week == null) {
       throw new WebApplicationException(Response.status(Status.BAD_REQUEST)
           .entity(Collections.singletonMap("message", "Week not found")).build());

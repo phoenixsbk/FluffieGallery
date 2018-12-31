@@ -11,6 +11,23 @@ var getWeek = function(id) {
         $.each(data.paintings, function(i , p) {
           $('#weekimgcontainer').append(createBlock(data.name, p));
         });
+
+        $('figure').fancybox({
+          toolbar: true,
+          smallBtn: true,
+          thumbs: {
+            axis: 'x'
+          },
+          iframe: {
+            css: {
+              maxwidth: '80%',
+              maxheight: '80%',
+              margin: 0,
+              width: '70%',
+              height: '80%'
+            }
+          }
+        });
       }
     }
   });
@@ -27,7 +44,10 @@ var createBlock = function(weekname, painting) {
   paddiv.append(contentdiv);
 
   var figure = $('<figure>', {
-    'class': 'img-sm-auto'
+    'class': 'img-sm-auto',
+    'data-fancybox': 'gallery',
+    'data-type': 'iframe',
+    'data-src': '/painting.html?id=' + painting.id
   });
   var figimg = $('<img>', {
     'src': '/gallery/week_' + weekname + '/' + painting.filePath,
@@ -35,36 +55,8 @@ var createBlock = function(weekname, painting) {
   });
   figure.append(figimg);
   contentdiv.append(figure);
-
-  var linkdiv = $('<div>', {
-    'class': 'entry-content flex flex-column align-items-center justify-content-center'
-  });
-  contentdiv.append(linkdiv);
-
-  var hline = $('<h5>');
-  var linkline = $('<a>', {
-    'href': '/painting.html?id=' + painting.id
-  });
-  linkline.append(painting.name);
-  hline.append(linkline);
-  linkdiv.append(hline);
-
-  var ulline = $('<ul>', {
-    'class': 'flex flex-wrap justify-content-center'
-  });
-
-  var liline = $('<li>');
-  var lia = $('<a>', {
-    'href': '/painting.html?id=' + painting.id
-  });
-  liline.append(lia);
-  lia.append(painting.painter.name);
-
-  ulline.append(liline);
-  linkdiv.append(ulline);
-
   return paddiv;
-}
+};
 
 $(function() {
   var urlParams = new URLSearchParams(window.location.search);
